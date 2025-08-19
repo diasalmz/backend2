@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Админ-панель Karak Tea</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f7f7f7; }
+        .container { max-width: 1200px; margin: 40px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #0001; padding: 32px; }
+        h1 { text-align: center; margin-bottom: 32px; }
+        h2 { margin-top: 40px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 32px; }
+        th, td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; }
+        th { background: #f0f0f0; }
+        tr:nth-child(even) { background: #fafafa; }
+        .logout { float: right; margin-top: -40px; }
+        .logout a { color: #b00; text-decoration: none; font-weight: bold; }
+        .small { font-size: 13px; color: #888; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Админ-панель Karak Tea</h1>
+        <div class="logout"><a href="/api/v1/admin/logout">Выйти</a></div>
+        <h2>Пользователи</h2>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Телефон</th>
+                <th>Имя</th>
+                <th>Создан</th>
+                <th>Последний вход</th>
+            </tr>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.phone }}</td>
+                <td>{{ user.name or '' }}</td>
+                <td class="small">{{ user.created_at }}</td>
+                <td class="small">{{ user.last_login or '' }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <h2>Последние OTP-заявки</h2>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Телефон</th>
+                <th>Код</th>
+                <th>Использован</th>
+                <th>Попытки</th>
+                <th>Создан</th>
+                <th>Истекает</th>
+            </tr>
+            {% for otp in otps %}
+            <tr>
+                <td>{{ otp.id }}</td>
+                <td>{{ otp.phone }}</td>
+                <td>{{ otp.code }}</td>
+                <td>{{ 'Да' if otp.is_used else 'Нет' }}</td>
+                <td>{{ otp.attempts }}</td>
+                <td class="small">{{ otp.created_at }}</td>
+                <td class="small">{{ otp.expires_at }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html> 
